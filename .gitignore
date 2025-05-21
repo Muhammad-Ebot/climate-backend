@@ -1,0 +1,24 @@
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environment
+cenv/
+
+# Environment variables
+.env
+
+# SQLite database (optional — only if you're using it)
+*.sqlite3
+
+# Logs
+*.log
+
+# IDE/editor folders
+.vscode/
+.idea/
+
+# macOS / Windows system files
+.DS_Store
+Thumbs.db
