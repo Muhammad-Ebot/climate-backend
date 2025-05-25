@@ -51,6 +51,7 @@ def drought_forecast_view(request):
     
 
 
+
 logger = logging.getLogger(__name__)
 
 @csrf_exempt
@@ -121,21 +122,22 @@ def get_rainfall_prediction(request):
                 status=400
             )
         
-        # No need to iterate through DataFrame rows since we're already returning a list of dicts
-        # from our updated predict_rainfall_24h function
-
         # Prepare the response
         response_data = {
             'status': 'success',
+            'province': prediction_results.get('province', 'unknown'),
             'prediction_date': prediction_results['prediction_date'].strftime('%Y-%m-%d'),
             'coordinates': {
-                'latitude': prediction_results['coordinates'][0],
-                'longitude': prediction_results['coordinates'][1],
+                'latitude': prediction_results['coordinates']['latitude'],  # Changed from [0]
+                'longitude': prediction_results['coordinates']['longitude'],  # Changed from [1]
             },
-            'grid_id': prediction_results['grid_id'],
-            'hourly_predictions': prediction_results['hourly_predictions'],  # Already formatted for JSON
+            'hourly_predictions': prediction_results['hourly_predictions'],
             'summary': prediction_results['summary']
         }
+
+        # Only include grid_id if it exists in the results
+        if 'grid_id' in prediction_results:
+            response_data['grid_id'] = prediction_results['grid_id']
 
         return JsonResponse(response_data)
 
