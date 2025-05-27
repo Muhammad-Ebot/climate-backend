@@ -135,9 +135,6 @@ def get_rainfall_prediction(request):
             'summary': prediction_results['summary']
         }
 
-        # Only include grid_id if it exists in the results
-        if 'grid_id' in prediction_results:
-            response_data['grid_id'] = prediction_results['grid_id']
 
         return JsonResponse(response_data)
 
