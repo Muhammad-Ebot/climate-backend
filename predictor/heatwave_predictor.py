@@ -6,6 +6,7 @@ import pandas as pd
 import joblib
 import requests
 import os
+from datetime import datetime, timedelta
 from django.conf import settings
 
 province_model_map = {
