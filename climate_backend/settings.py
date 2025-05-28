@@ -64,7 +64,7 @@ MIDDLEWARE = [
 #]
 
 CORS_ALLOWED_ORIGINS = [
-    "https://climatrix-frontend.onrender.com",
+    "https://climate-frontend.onrender.com",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
