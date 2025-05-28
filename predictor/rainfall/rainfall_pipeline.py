@@ -87,7 +87,8 @@ def get_weather_params_for_province(lat, lon, start_date, target_date, province)
         "longitude": lon,
         "timezone": "Asia/Karachi",
         "start_date": start_date.strftime('%Y-%m-%d'),
-        "end_date": target_date.strftime('%Y-%m-%d')
+        "end_date": target_date.strftime('%Y-%m-%d'),
+        "apikey": "hNaRTVY4v6i4jhWK"
     }
     
     if province.lower() == 'sindh':
@@ -273,10 +274,10 @@ def fetch_forecast(lat, lon, prediction_date=None):
         # Determine whether to use forecast or historical API
         if target_date >= today and target_date <= max_forecast_date:
             api_type = 'forecast'
-            url = "https://api.open-meteo.com/v1/forecast"
+            url = "https://customer-api.open-meteo.com/v1/forecast"
         elif target_date <= min_historical_date:
             api_type = 'historical'
-            url = "https://archive-api.open-meteo.com/v1/archive"
+            url = "https://customer-archive-api.open-meteo.com/v1/archive"
         else:
             raise ValueError(
                 f"Requested date {target_date.strftime('%Y-%m-%d')} is not available. "
