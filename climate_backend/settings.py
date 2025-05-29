@@ -56,15 +56,24 @@ MIDDLEWARE = [
 ]
 
 # Allow requests from your React development server
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "https://climatrix-frontend.onrender.com",
+#CORS_ALLOWED_ORIGINS = [
+    #"http://localhost:3000",
+    #"http://127.0.0.1:3000",
+    #"https://climatrix-frontend.onrender.com",
     # Add your production domain when you deploy
+#]
+
+CORS_ALLOWED_ORIGINS = [
+    "https://climate-frontend.onrender.com",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://climate-frontend.onrender.com'
 ]
 
 # Alternatively, for development you can allow all origins
-# CORS_ALLOW_ALL_ORIGINS = True  # Use only in development!
+#CORS_ALLOW_ALL_ORIGINS = True  
+# Use only in development!
 
 ROOT_URLCONF = 'climate_backend.urls'
 

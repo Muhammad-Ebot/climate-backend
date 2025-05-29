@@ -87,7 +87,8 @@ def get_weather_params_for_province(lat, lon, start_date, target_date, province)
         "longitude": lon,
         "timezone": "Asia/Karachi",
         "start_date": start_date.strftime('%Y-%m-%d'),
-        "end_date": target_date.strftime('%Y-%m-%d')
+        "end_date": target_date.strftime('%Y-%m-%d'),
+        "apikey": "hNaRTVY4v6i4jhWK"
     }
     
     if province.lower() == 'sindh':
@@ -273,10 +274,10 @@ def fetch_forecast(lat, lon, prediction_date=None):
         # Determine whether to use forecast or historical API
         if target_date >= today and target_date <= max_forecast_date:
             api_type = 'forecast'
-            url = "https://api.open-meteo.com/v1/forecast"
+            url = "https://customer-api.open-meteo.com/v1/forecast"
         elif target_date <= min_historical_date:
             api_type = 'historical'
-            url = "https://archive-api.open-meteo.com/v1/archive"
+            url = "https://customer-archive-api.open-meteo.com/v1/archive"
         else:
             raise ValueError(
                 f"Requested date {target_date.strftime('%Y-%m-%d')} is not available. "
@@ -650,7 +651,9 @@ def predict_rainfall_24h(latitude, longitude, prediction_date=None):
         probas = model.predict_proba(X_scaled)
 
         # 8. Prepare results
-        results_df = pred_features_df[['date', 'hour']].copy()
+        results_df = pred_features_df[['date', 'hour', 'relative_humidity_2m', 
+                                      'cloud_cover_mid', 'wind_gusts_10m', 
+                                      'soil_moisture_0_to_7cm']].copy()
         if 'rain' in pred_features_df.columns:
             results_df['rain'] = pred_features_df['rain']
         
@@ -675,8 +678,13 @@ def predict_rainfall_24h(latitude, longitude, prediction_date=None):
                 'hour': int(row['hour']),
                 'rain_category': int(row['rain_category']),
                 'rain_category_label': row['rain_category_label'],
+                'relative_humidity_2m': float(row['relative_humidity_2m']),
+                'cloud_cover_mid': float(row['cloud_cover_mid']),
+                'wind_gusts_10m': float(row['wind_gusts_10m']),
+                'soil_moisture_0_to_7cm': float(row['soil_moisture_0_to_7cm']),
                 'prediction_confidence': float(row['prediction_confidence'])
             }
+
             if 'rain' in results_df.columns:
                 prediction['actual_rain'] = float(row['rain']) if not pd.isna(row['rain']) else 0.0
             hourly_predictions.append(prediction)

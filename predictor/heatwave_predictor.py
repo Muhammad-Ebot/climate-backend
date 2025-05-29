@@ -6,6 +6,7 @@ import pandas as pd
 import joblib
 import requests
 import os
+from datetime import datetime, timedelta
 from django.conf import settings
 
 province_model_map = {
@@ -31,11 +32,16 @@ def get_province_from_coordinates(lat, lon):
 
 
 def fetch_weather_data(lat, lon):
+    start_date = datetime.today().date()
+    end_date = start_date + timedelta(days=13)  # 14 days including today
+
     params = {
         "latitude": lat,
         "longitude": lon,
         "daily": "temperature_2m_max,temperature_2m_min,temperature_2m_mean,precipitation_sum,wind_speed_10m_max,wind_gusts_10m_max,wind_direction_10m_dominant,shortwave_radiation_sum,et0_fao_evapotranspiration",
         "timezone": "auto",
+        "start_date": str(start_date),
+        "end_date": str(end_date),
         "apikey": "hNaRTVY4v6i4jhWK"
     }
 
@@ -57,7 +63,6 @@ def fetch_weather_data(lat, lon):
         "shortwave_radiation_sum": data["daily"]["shortwave_radiation_sum"],
         "et0_fao_evapotranspiration": data["daily"]["et0_fao_evapotranspiration"]
     })
-
 
 def predict_heatwave(latitude, longitude):
     try:
@@ -107,4 +112,5 @@ def predict_heatwave(latitude, longitude):
 
     df["heatwave_prediction"] = model.predict(df)
 
-    return df[["date", "temperature_2m_mean", "heatwave_prediction"]].to_dict(orient="records")
+    return df[["date", "temperature_2m_mean", "wind_speed_10m_max", "shortwave_radiation_sum", "et0_fao_evapotranspiration", "heatwave_prediction"]].to_dict(orient="records")
+
